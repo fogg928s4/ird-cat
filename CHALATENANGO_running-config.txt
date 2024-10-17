@@ -1,0 +1,129 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname CHALATENANGO
+!
+!
+!
+enable secret 5 $1$mERr$2TRgADMDyMbg2ZbxY25Mc0
+!
+!
+!
+ip dhcp pool dhcp-chalate
+ network 192.168.50.0 255.255.255.0
+ default-router 192.168.50.1
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO2911/K9 sn FTX15243G06-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ ip address 192.168.50.1 255.255.255.0
+ ip access-group 123 in
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 201.100.11.1 255.255.255.0
+ ip access-group 123 in
+!
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+ ip access-group 123 in
+!
+interface GigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 192.168.30.1 255.255.255.0
+ ip access-group 123 in
+!
+interface GigabitEthernet0/0.40
+ encapsulation dot1Q 40
+ ip address 192.168.40.1 255.255.255.0
+ ip access-group 123 in
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/0/0
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Serial0/0/1
+ ip address 190.86.0.5 255.255.255.252
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router eigrp 10
+ passive-interface GigabitEthernet0/0
+ network 190.86.0.0
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+access-list 123 deny tcp any host 190.86.0.5 eq telnet
+access-list 123 deny tcp any host 192.168.20.1 eq telnet
+access-list 123 deny tcp any host 192.168.30.1 eq telnet
+access-list 123 deny tcp any host 192.168.50.1 eq telnet
+access-list 123 permit ip any any
+access-list 123 permit tcp host 192.168.40.4 host 192.168.40.1 eq telnet
+access-list 123 permit tcp host 192.168.40.5 host 192.168.40.1 eq telnet
+access-list 123 deny tcp any host 192.168.40.1 eq telnet
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ password nango
+ login
+!
+!
+!
+end
+
